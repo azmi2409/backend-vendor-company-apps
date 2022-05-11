@@ -39,7 +39,7 @@ async function handleLogin(username, passport) {
       //set last_login
       company.last_login = Date.now();
       await company.save();
-      return { username, token, type };
+      return { token, username: company.username, type: company.type };
     } else {
       throw new Error("Invalid Password");
     }
