@@ -31,7 +31,7 @@ async function handleLogin(username, passport) {
     if (isPasswordValid) {
       const payload = {
         id: company._id,
-        name: company.username,
+        username: company.username,
         type: company.type,
         expired: Date.now() + config.jwtExpiration,
       };
@@ -39,7 +39,7 @@ async function handleLogin(username, passport) {
       //set last_login
       company.last_login = Date.now();
       await company.save();
-      return { token };
+      return { username, token, type };
     } else {
       throw new Error("Invalid Password");
     }
@@ -61,8 +61,9 @@ async function getAppointmentById(id) {
 }
 
 //Create an appointment
-async function createAppointment(appointment) {
+async function createAppointment(userid, appointment) {
   const newAppointment = new appointmentModel(appointment);
+  newAppointment.company_id = userid;
   try {
     const savedAppointment = await newAppointment.save();
     return savedAppointment;

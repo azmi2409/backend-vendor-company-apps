@@ -60,7 +60,10 @@ async function handleLogin(req, res) {
 //Create an appointment
 async function createAppointment(req, res) {
   try {
-    const appointment = await companyService.createAppointment(req.body);
+    const appointment = await companyService.createAppointment(
+      req.user._id,
+      req.body
+    );
     res.json(appointment);
   } catch (err) {
     res.status(500).send({ message: err.message });
