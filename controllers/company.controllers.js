@@ -61,7 +61,7 @@ async function handleLogin(req, res) {
 async function createAppointment(req, res) {
   try {
     const appointment = await companyService.createAppointment(
-      req.user._id,
+      req.user,
       req.body
     );
     res.json(appointment);

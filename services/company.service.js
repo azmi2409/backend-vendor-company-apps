@@ -61,9 +61,10 @@ async function getAppointmentById(id) {
 }
 
 //Create an appointment
-async function createAppointment(userid, appointment) {
+async function createAppointment(user, appointment) {
   const newAppointment = new appointmentModel(appointment);
-  newAppointment.company_id = userid;
+  newAppointment.company_id = user._id;
+  newAppointment.company = user.username;
   try {
     const savedAppointment = await newAppointment.save();
     return savedAppointment;
@@ -73,7 +74,7 @@ async function createAppointment(userid, appointment) {
 }
 
 async function getAllVendors() {
-  const vendors = await vendorModel.find(null, "event_name");
+  const vendors = await vendorModel.find();
   return vendors;
 }
 
