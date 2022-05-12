@@ -6,12 +6,24 @@ const appointmentSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  company_id: {
-    type: mongoose.Schema.Types.ObjectId,
+  company: {
+    type: {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+      },
+      username: String,
+    },
     required: true,
   },
-  vendor_id: {
-    type: mongoose.Schema.Types.ObjectId,
+  vendor: {
+    type: {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Vendor",
+      },
+      username: String,
+    },
     required: true,
   },
   proposed_date: {
@@ -30,6 +42,7 @@ const appointmentSchema = new Schema({
   event_name: {
     type: String,
     required: true,
+    ref: "Vendor",
   },
   status: {
     type: String,
