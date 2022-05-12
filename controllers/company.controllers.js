@@ -11,7 +11,7 @@ const verify = verifyRoles("company");
 //Routes
 router.post("/login", handleLogin);
 router.post("/register", registerCompany);
-router.post("/create", authenticate(), verify, createAppointment);
+router.post("/appointment", authenticate(), verify, createAppointment);
 router.get("/vendor", authenticate(), verify, getAllVendors);
 router.get("/appointment", authenticate(), verify, getAllAppointments);
 router.get("/appointment/:id", authenticate(), verify, getAppointmentById);

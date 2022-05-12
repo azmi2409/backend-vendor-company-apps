@@ -28,7 +28,7 @@ async function handleLogin(username, passport) {
     if (isPasswordValid) {
       const payload = {
         id: vendor._id,
-        name: vendor.username,
+        username: vendor.username,
         type: vendor.type,
         expired: Date.now() + config.jwtExpiration,
       };
@@ -43,8 +43,8 @@ async function handleLogin(username, passport) {
 }
 
 //Get all the appointments
-async function getAllAppointments() {
-  const appointments = await mongoose.model("Appointment").find();
+async function getAllAppointments(vendorId) {
+  const appointments = await appointmentModel.find({ vendor_id: vendorId });
   return appointments;
 }
 
@@ -54,15 +54,22 @@ async function getAppointmentById(id) {
   return appointment;
 }
 
-//Create an appointment
-async function createAppointment(appointment) {
-  const newAppointment = new appointmentModel(appointment);
-  try {
-    const savedAppointment = await newAppointment.save();
-    return savedAppointment;
-  } catch (error) {
-    throw error;
-  }
+//Confirm Appointment
+async function confirmAppointment(appointmentId, date) {
+  const appointment = await appointmentModel.findById(appointmentId);
+  appointment.status = "confirmed";
+  appointment.confirmed_date = date;
+  await appointment.save();
+  return appointment;
+}
+
+//Reject Appointment
+async function rejectAppointment(appointmentId, remark) {
+  const appointment = await appointmentModel.findById(appointmentId);
+  appointment.status = "rejected";
+  appointment.remarks = remark;
+  await appointment.save();
+  return appointment;
 }
 
 module.exports = {
@@ -70,5 +77,6 @@ module.exports = {
   handleLogin,
   getAllAppointments,
   getAppointmentById,
-  createAppointment,
+  confirmAppointment,
+  rejectAppointment,
 };
