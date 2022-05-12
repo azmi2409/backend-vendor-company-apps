@@ -33,7 +33,7 @@ async function handleLogin(username, passport) {
         expired: Date.now() + config.jwtExpiration,
       };
       const token = jwt.encode(payload, config.jwtSecret);
-      return { token };
+      return { token, username: vendor.username, type: vendor.type };
     } else {
       throw new Error("Invalid Password");
     }
